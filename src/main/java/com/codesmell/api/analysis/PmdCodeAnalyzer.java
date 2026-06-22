@@ -5,6 +5,7 @@ import net.sourceforge.pmd.PmdAnalysis;
 import net.sourceforge.pmd.lang.document.FileId;
 import net.sourceforge.pmd.lang.document.TextFile;
 import net.sourceforge.pmd.lang.java.JavaLanguageModule;
+import net.sourceforge.pmd.lang.rule.RuleSet;
 import net.sourceforge.pmd.reporting.RuleViolation;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,12 @@ public class PmdCodeAnalyzer implements CodeAnalyzer {
     private static final String RULESET_RESOURCE = "pmd/ruleset.xml";
     private static final String ANALYZED_FILE_NAME = "SubmittedCode.java";
 
+    private final RuleSet ruleset;
+
+    public PmdCodeAnalyzer() {
+        ruleset = loadRuleset();
+    }
+
     @Override
     public List<SmellFinding> findSmells(String code) {
         var configuration = new PMDConfiguration();
@@ -27,7 +34,7 @@ public class PmdCodeAnalyzer implements CodeAnalyzer {
         configuration.setIgnoreIncrementalAnalysis(true);
 
         try (var analysis = PmdAnalysis.create(configuration)) {
-            analysis.addRuleSet(analysis.newRuleSetLoader().loadFromString(RULESET_RESOURCE, rulesetXml()));
+            analysis.addRuleSet(RuleSet.copy(ruleset));
             analysis.files().addFile(sourceFile(code));
             var report = analysis.performAnalysisAndCollectReport();
             if (!report.getProcessingErrors().isEmpty()) {
@@ -46,6 +53,13 @@ public class PmdCodeAnalyzer implements CodeAnalyzer {
             FileId.fromPathLikeString(ANALYZED_FILE_NAME),
             JavaLanguageModule.getInstance().getDefaultVersion()
         );
+    }
+
+    private RuleSet loadRuleset() {
+        var configuration = new PMDConfiguration();
+        try (var analysis = PmdAnalysis.create(configuration)) {
+            return analysis.newRuleSetLoader().loadFromString(RULESET_RESOURCE, rulesetXml());
+        }
     }
 
     private SmellFinding findingFrom(RuleViolation violation) {

@@ -71,6 +71,29 @@ class AnalysisServiceTest {
             .hasMessage("analysis timed out");
     }
 
+    @Test
+    void keepsSlotBusyUntilTimedOutAnalysisActuallyStops() throws InterruptedException {
+        var analyzerStarted = new CountDownLatch(1);
+        var releaseAnalyzer = new CountDownLatch(1);
+        var service = new AnalysisService(code -> {
+            analyzerStarted.countDown();
+            awaitIgnoringInterrupt(releaseAnalyzer);
+            return List.of();
+        }, 100, Duration.ofMillis(10), 1);
+
+        assertThatThrownBy(() -> service.analyze("class First {}"))
+            .isInstanceOf(AnalysisTimedOut.class)
+            .hasMessage("analysis timed out");
+
+        analyzerStarted.await();
+
+        assertThatThrownBy(() -> service.analyze("class Second {}"))
+            .isInstanceOf(TooManyAnalyses.class)
+            .hasMessage("too many analyses are already running");
+
+        releaseAnalyzer.countDown();
+    }
+
     private static void await(CountDownLatch latch) {
         try {
             latch.await();
@@ -84,6 +107,21 @@ class AnalysisServiceTest {
             Thread.sleep(duration);
         } catch (InterruptedException error) {
             Thread.currentThread().interrupt();
+        }
+    }
+
+    private static void awaitIgnoringInterrupt(CountDownLatch latch) {
+        boolean interrupted = false;
+        while (true) {
+            try {
+                latch.await();
+                if (interrupted) {
+                    Thread.currentThread().interrupt();
+                }
+                return;
+            } catch (InterruptedException error) {
+                interrupted = true;
+            }
         }
     }
 }

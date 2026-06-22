@@ -23,9 +23,9 @@ PMD is embedded as a library and pinned in `pom.xml`.
 ## Try It
 
 ```bash
-curl -s -X POST http://localhost:8080/analyze \
+curl -X POST --data-binary @src/test/resources/smells/DeadCode.java \
   -H 'Content-Type: text/plain' \
-  --data-binary @src/test/resources/smells/DeadCode.java
+  http://localhost:8080/analyze
 ```
 
 Expected rule: `UnusedLocalVariable`.
