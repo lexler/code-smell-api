@@ -1,0 +1,45 @@
+src/main/java/com/codesmell/api/PmdCodeAnalyzer.java
+  s_389830dd831204::t_58195f3287a5b3 1-66
+src/test/java/com/codesmell/api/PmdCodeAnalyzerTest.java
+  s_389830dd831204::t_58195f3287a5b3 1-62
+src/test/java/com/codesmell/api/ApiKeyFilterTest.java
+  s_389830dd831204::t_34a9252f6ea9ed 1-62
+src/main/java/com/codesmell/api/CodeAnalyzer.java
+  s_389830dd831204::t_4dd9bb4c372460 1-8
+src/test/java/com/codesmell/api/AnalysisEndpointTest.java
+  s_389830dd831204::t_4c2f86e711cde3 1-84
+src/main/java/com/codesmell/api/AnalysisTimedOut.java
+  s_389830dd831204::t_4dd9bb4c372460 1-8
+src/main/java/com/codesmell/api/TooManyAnalyses.java
+  s_389830dd831204::t_4dd9bb4c372460 1-8
+src/main/java/com/codesmell/api/ApiKeyFilter.java
+  s_389830dd831204::t_34a9252f6ea9ed 1-36
+src/main/resources/pmd/ruleset.xml
+  s_389830dd831204::t_c63a7ef8fe5226 2,7
+src/main/java/com/codesmell/api/SmellFinding.java
+  s_389830dd831204::t_4dd9bb4c372460 1-8
+src/main/java/com/codesmell/api/AnalysisFailed.java
+  s_389830dd831204::t_4dd9bb4c372460 1-8
+README.md
+  s_389830dd831204::t_c63a7ef8fe5226 6,24
+  s_389830dd831204::t_e9074062a39f05 19-23,25-36
+  s_389830dd831204::t_54fe79eb61a805 3
+pom.xml
+  s_389830dd831204::t_34a9252f6ea9ed 45-49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.10",
+  "base_commit_sha": "dd223092af9bc3349740544458d68caeeb92cac1",
+  "prompts": {},
+  "sessions": {
+    "s_389830dd831204": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ef105-bb78-77d0-995d-db1f018f1644",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Lada Kesseler <archie.kesseler@gmail.com>"
+    }
+  }
+}
