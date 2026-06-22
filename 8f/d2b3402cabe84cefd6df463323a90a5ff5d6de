@@ -1,0 +1,28 @@
+README.md
+  s_2fa2325e84a1d2::t_ca73ce3570dab1 7
+  s_389830dd831204::t_bf878bb416e682 5-6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.10",
+  "base_commit_sha": "8fd2b3402cabe84cefd6df463323a90a5ff5d6de",
+  "prompts": {},
+  "sessions": {
+    "s_2fa2325e84a1d2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f49ac849-7161-4ff9-b76d-e687c3be644d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Lada Kesseler <archie.kesseler@gmail.com>"
+    },
+    "s_389830dd831204": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ef105-bb78-77d0-995d-db1f018f1644",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Lada Kesseler <archie.kesseler@gmail.com>"
+    }
+  }
+}
