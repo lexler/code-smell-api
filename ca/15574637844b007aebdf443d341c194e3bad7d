@@ -1,0 +1,19 @@
+api.http
+  s_2fa2325e84a1d2::t_116001f658995c 1-58
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.10",
+  "base_commit_sha": "ca15574637844b007aebdf443d341c194e3bad7d",
+  "prompts": {},
+  "sessions": {
+    "s_2fa2325e84a1d2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f49ac849-7161-4ff9-b76d-e687c3be644d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Lada Kesseler <archie.kesseler@gmail.com>"
+    }
+  }
+}
