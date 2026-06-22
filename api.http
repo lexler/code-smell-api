@@ -1,0 +1,58 @@
+### Code Smell API — local requests (IntelliJ HTTP Client)
+### Start the server first:  ./run.sh        (http://localhost:8080)
+### Each request sends a fixture file as the raw text/plain body.
+### When an API key is configured, add:  X-API-Key: {{apiKey}}
+
+@host = http://localhost:8080
+
+### Clean code -> 200 []  (no smells)
+POST {{host}}/analyze
+Content-Type: text/plain
+
+< src/test/resources/smells/CleanCode.java
+
+### Dead Code -> UnusedLocalVariable
+POST {{host}}/analyze
+Content-Type: text/plain
+
+< src/test/resources/smells/DeadCode.java
+
+### Global Mutable State -> MutableStaticState
+POST {{host}}/analyze
+Content-Type: text/plain
+
+< src/test/resources/smells/GlobalMutableState.java
+
+### Magic Number -> AvoidLiteralsInIfCondition
+POST {{host}}/analyze
+Content-Type: text/plain
+
+< src/test/resources/smells/MagicNumber.java
+
+### Nested If Canyon -> AvoidDeeplyNestedIfStmts
+POST {{host}}/analyze
+Content-Type: text/plain
+
+< src/test/resources/smells/NestedIfCanyon.java
+
+### Primitive Obsession -> UseObjectForClearerAPI
+POST {{host}}/analyze
+Content-Type: text/plain
+
+< src/test/resources/smells/PrimitiveObsession.java
+
+### Swallowed Exception -> EmptyCatchBlock
+POST {{host}}/analyze
+Content-Type: text/plain
+
+< src/test/resources/smells/SwallowedException.java
+
+### Empty body -> 400 (code is required)
+POST {{host}}/analyze
+Content-Type: text/plain
+
+### Unparseable code -> 400 (code could not be parsed)
+POST {{host}}/analyze
+Content-Type: text/plain
+
+this is not valid java @@@
