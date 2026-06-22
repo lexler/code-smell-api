@@ -1,7 +1,7 @@
 package com.codesmell.api.http;
 
 import com.codesmell.api.CodeSmellApiApplication;
-import com.codesmell.api.analysis.SmellFinding;
+import com.codesmell.api.analysis.result.Violation;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ class AnalysisEndpointTest {
     private final ObjectMapper json = new ObjectMapper();
 
     @Test
-    void returnsFindingsForSubmittedCode() throws Exception {
+    void returnsViolationsForSubmittedCode() throws Exception {
         try (var context = new SpringApplicationBuilder(CodeSmellApiApplication.class)
             .web(WebApplicationType.SERVLET)
             .properties("server.port=0")
@@ -33,14 +33,14 @@ class AnalysisEndpointTest {
             var response = post(portOf(context), fixture("DeadCode.java"));
 
             assertThat(response.statusCode()).isEqualTo(200);
-            assertThat(findingsFrom(response.body()))
-                .extracting(SmellFinding::rule)
+            assertThat(violationsFrom(response.body()))
+                .extracting(Violation::rule)
                 .contains("UnusedLocalVariable");
         }
     }
 
     @Test
-    void returnsEmptyFindingsForCleanCode() throws Exception {
+    void returnsEmptyViolationsForCleanCode() throws Exception {
         try (var context = new SpringApplicationBuilder(CodeSmellApiApplication.class)
             .web(WebApplicationType.SERVLET)
             .properties("server.port=0")
@@ -48,7 +48,7 @@ class AnalysisEndpointTest {
             var response = post(portOf(context), fixture("CleanCode.java"));
 
             assertThat(response.statusCode()).isEqualTo(200);
-            assertThat(findingsFrom(response.body())).isEmpty();
+            assertThat(violationsFrom(response.body())).isEmpty();
         }
     }
 
@@ -93,7 +93,7 @@ class AnalysisEndpointTest {
         );
     }
 
-    private List<SmellFinding> findingsFrom(String body) throws IOException {
+    private List<Violation> violationsFrom(String body) throws IOException {
         return json.readValue(body, new TypeReference<>() {});
     }
 

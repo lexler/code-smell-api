@@ -1,5 +1,10 @@
 package com.codesmell.api.analysis;
 
+import com.codesmell.api.analysis.error.AnalysisRequestTooLarge;
+import com.codesmell.api.analysis.error.AnalysisTimedOut;
+import com.codesmell.api.analysis.error.InvalidAnalysisRequest;
+import com.codesmell.api.analysis.error.TooManyAnalyses;
+import com.codesmell.api.analysis.result.Violation;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -12,11 +17,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class AnalysisServiceTest {
 
     @Test
-    void returnsFindingsFromTheAnalyzer() {
-        var finding = new SmellFinding("UnusedLocalVariable", "Avoid unused local variables", 4, 3);
-        var service = new AnalysisService(code -> List.of(finding), 100, Duration.ofSeconds(1), 1);
+    void returnsViolationsFromTheAnalyzer() {
+        var violation = new Violation("UnusedLocalVariable", "Avoid unused local variables", 4, 3);
+        var service = new AnalysisService(code -> List.of(violation), 100, Duration.ofSeconds(1), 1);
 
-        assertThat(service.analyze("class Sample {}")).containsExactly(finding);
+        assertThat(service.analyze("class Sample {}")).containsExactly(violation);
     }
 
     @Test

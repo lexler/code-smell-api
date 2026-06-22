@@ -1,6 +1,6 @@
-package com.codesmell.api.analysis;
+package com.codesmell.api.analysis.result;
 
-public record SmellFinding(
+public record Violation(
     String rule,
     String message,
     int line,

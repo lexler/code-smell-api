@@ -1,5 +1,6 @@
-package com.codesmell.api.analysis;
+package com.codesmell.api.analysis.pmd;
 
+import com.codesmell.api.analysis.result.Violation;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ class PmdCodeAnalyzerTest {
 
     @Test
     void findsNoSmellsInCleanCode() {
-        assertThat(analyzer.findSmells(fixture("CleanCode.java"))).isEmpty();
+        assertThat(analyzer.analyze(fixture("CleanCode.java"))).isEmpty();
     }
 
     @Test
@@ -30,15 +31,15 @@ class PmdCodeAnalyzerTest {
         );
 
         expectedRules.forEach((fixture, rule) ->
-            assertThat(analyzer.findSmells(fixture(fixture)))
-                .extracting(SmellFinding::rule)
+            assertThat(analyzer.analyze(fixture(fixture)))
+                .extracting(Violation::rule)
                 .contains(rule)
         );
     }
 
     @Test
     void exposesLineMessageAndSeverity() {
-        var findings = analyzer.findSmells(fixture("DeadCode.java"));
+        var findings = analyzer.analyze(fixture("DeadCode.java"));
 
         assertThat(findings).first()
             .satisfies(finding -> {

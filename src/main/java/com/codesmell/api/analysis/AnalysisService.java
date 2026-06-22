@@ -1,5 +1,11 @@
 package com.codesmell.api.analysis;
 
+import com.codesmell.api.analysis.error.AnalysisFailed;
+import com.codesmell.api.analysis.error.AnalysisRequestTooLarge;
+import com.codesmell.api.analysis.error.AnalysisTimedOut;
+import com.codesmell.api.analysis.error.InvalidAnalysisRequest;
+import com.codesmell.api.analysis.error.TooManyAnalyses;
+import com.codesmell.api.analysis.result.Violation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,13 +51,13 @@ public class AnalysisService {
         );
     }
 
-    public List<SmellFinding> analyze(String code) {
+    public List<Violation> analyze(String code) {
         rejectMissing(code);
         rejectOversized(code);
-        return findSmells(code);
+        return analyzeCode(code);
     }
 
-    private List<SmellFinding> findSmells(String code) {
+    private List<Violation> analyzeCode(String code) {
         var analysis = submitAnalysis(code);
         try {
             return analysis.get(timeout.toMillis(), TimeUnit.MILLISECONDS);
@@ -66,9 +72,9 @@ public class AnalysisService {
         }
     }
 
-    private Future<List<SmellFinding>> submitAnalysis(String code) {
+    private Future<List<Violation>> submitAnalysis(String code) {
         try {
-            return executor.submit(() -> analyzer.findSmells(code));
+            return executor.submit(() -> analyzer.analyze(code));
         } catch (RejectedExecutionException error) {
             throw new TooManyAnalyses("too many analyses are already running");
         }

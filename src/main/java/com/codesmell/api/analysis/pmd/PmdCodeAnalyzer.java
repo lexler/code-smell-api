@@ -1,5 +1,8 @@
-package com.codesmell.api.analysis;
+package com.codesmell.api.analysis.pmd;
 
+import com.codesmell.api.analysis.CodeAnalyzer;
+import com.codesmell.api.analysis.error.InvalidAnalysisRequest;
+import com.codesmell.api.analysis.result.Violation;
 import net.sourceforge.pmd.PMDConfiguration;
 import net.sourceforge.pmd.PmdAnalysis;
 import net.sourceforge.pmd.lang.document.FileId;
@@ -28,7 +31,7 @@ public class PmdCodeAnalyzer implements CodeAnalyzer {
     }
 
     @Override
-    public List<SmellFinding> findSmells(String code) {
+    public List<Violation> analyze(String code) {
         var configuration = new PMDConfiguration();
         configuration.setThreads(1);
         configuration.setIgnoreIncrementalAnalysis(true);
@@ -42,7 +45,7 @@ public class PmdCodeAnalyzer implements CodeAnalyzer {
             }
             return report.getViolations().stream()
                 .sorted(Comparator.comparingInt(RuleViolation::getBeginLine).thenComparing(violation -> violation.getRule().getName()))
-                .map(this::findingFrom)
+                .map(this::violationFrom)
                 .toList();
         }
     }
@@ -62,8 +65,8 @@ public class PmdCodeAnalyzer implements CodeAnalyzer {
         }
     }
 
-    private SmellFinding findingFrom(RuleViolation violation) {
-        return new SmellFinding(
+    private Violation violationFrom(RuleViolation violation) {
+        return new Violation(
             violation.getRule().getName(),
             violation.getDescription(),
             violation.getBeginLine(),

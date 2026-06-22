@@ -1,8 +1,10 @@
 package com.codesmell.api.analysis;
 
+import com.codesmell.api.analysis.result.Violation;
+
 import java.util.List;
 
 public interface CodeAnalyzer {
 
-    List<SmellFinding> findSmells(String code);
+    List<Violation> analyze(String code);
 }
