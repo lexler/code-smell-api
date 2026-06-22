@@ -2,6 +2,9 @@
 
 HTTP API for finding Java code smells in submitted source.
 
+This is a learning/demo service. It is real and deployable, but it is not hardened for production or untrusted public traffic.
+If you expose it, set an API key and cap `max-instances`.
+
 ```text
 POST /analyze
 Content-Type: text/plain
