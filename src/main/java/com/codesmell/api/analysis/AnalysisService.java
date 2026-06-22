@@ -1,4 +1,4 @@
-package com.codesmell.api;
+package com.codesmell.api.analysis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,22 +39,21 @@ public class AnalysisService {
         this.executor = Executors.newFixedThreadPool(maxConcurrentAnalyses);
     }
 
-    public List<SmellFinding> analyze(AnalysisRequest request) {
-        String code = codeFrom(request);
+    public List<SmellFinding> analyze(String code) {
+        rejectMissing(code);
         rejectOversized(code);
         acquireAnalysisSlot();
         try {
-            return analyze(code);
+            return findSmells(code);
         } finally {
             analysisSlots.release();
         }
     }
 
-    private String codeFrom(AnalysisRequest request) {
-        if (request == null || request.code() == null || request.code().isBlank()) {
+    private void rejectMissing(String code) {
+        if (code == null || code.isBlank()) {
             throw new InvalidAnalysisRequest("code is required");
         }
-        return request.code();
     }
 
     private void rejectOversized(String code) {
@@ -69,7 +68,7 @@ public class AnalysisService {
         }
     }
 
-    private List<SmellFinding> analyze(String code) {
+    private List<SmellFinding> findSmells(String code) {
         var analysis = executor.submit(() -> analyzer.findSmells(code));
         try {
             return analysis.get(timeout.toMillis(), TimeUnit.MILLISECONDS);

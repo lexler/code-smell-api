@@ -1,4 +1,4 @@
-package com.codesmell.api;
+package com.codesmell.api.auth;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,4 +1,4 @@
-package com.codesmell.api;
+package com.codesmell.api.analysis;
 
 public class AnalysisTimedOut extends RuntimeException {
 

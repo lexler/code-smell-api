@@ -1,4 +1,4 @@
-package com.codesmell.api;
+package com.codesmell.api.analysis;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,14 +16,14 @@ class AnalysisServiceTest {
         var finding = new SmellFinding("UnusedLocalVariable", "Avoid unused local variables", 4, 3);
         var service = new AnalysisService(code -> List.of(finding), 100, Duration.ofSeconds(1), 1);
 
-        assertThat(service.analyze(new AnalysisRequest("class Sample {}"))).containsExactly(finding);
+        assertThat(service.analyze("class Sample {}")).containsExactly(finding);
     }
 
     @Test
     void rejectsMissingCode() {
         var service = new AnalysisService(code -> List.of(), 100, Duration.ofSeconds(1), 1);
 
-        assertThatThrownBy(() -> service.analyze(new AnalysisRequest(" ")))
+        assertThatThrownBy(() -> service.analyze(" "))
             .isInstanceOf(InvalidAnalysisRequest.class)
             .hasMessage("code is required");
     }
@@ -32,7 +32,7 @@ class AnalysisServiceTest {
     void rejectsOversizedCode() {
         var service = new AnalysisService(code -> List.of(), 5, Duration.ofSeconds(1), 1);
 
-        assertThatThrownBy(() -> service.analyze(new AnalysisRequest("class Sample {}")))
+        assertThatThrownBy(() -> service.analyze("class Sample {}"))
             .isInstanceOf(AnalysisRequestTooLarge.class)
             .hasMessage("code is too large");
     }
@@ -47,11 +47,11 @@ class AnalysisServiceTest {
             return List.of();
         }, 100, Duration.ofSeconds(2), 1);
 
-        var firstAnalysis = new Thread(() -> service.analyze(new AnalysisRequest("class First {}")));
+        var firstAnalysis = new Thread(() -> service.analyze("class First {}"));
         firstAnalysis.start();
         analyzerStarted.await();
 
-        assertThatThrownBy(() -> service.analyze(new AnalysisRequest("class Second {}")))
+        assertThatThrownBy(() -> service.analyze("class Second {}"))
             .isInstanceOf(TooManyAnalyses.class)
             .hasMessage("too many analyses are already running");
 
@@ -66,7 +66,7 @@ class AnalysisServiceTest {
             return List.of();
         }, 100, Duration.ofMillis(10), 1);
 
-        assertThatThrownBy(() -> service.analyze(new AnalysisRequest("class Sample {}")))
+        assertThatThrownBy(() -> service.analyze("class Sample {}"))
             .isInstanceOf(AnalysisTimedOut.class)
             .hasMessage("analysis timed out");
     }

@@ -1,6 +1,13 @@
-package com.codesmell.api;
+package com.codesmell.api.http;
 
+import com.codesmell.api.analysis.AnalysisRequestTooLarge;
+import com.codesmell.api.analysis.AnalysisService;
+import com.codesmell.api.analysis.AnalysisTimedOut;
+import com.codesmell.api.analysis.InvalidAnalysisRequest;
+import com.codesmell.api.analysis.SmellFinding;
+import com.codesmell.api.analysis.TooManyAnalyses;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,9 +26,9 @@ public class AnalysisController {
         this.analyzer = analyzer;
     }
 
-    @PostMapping("/analyze")
-    public List<SmellFinding> analyze(@RequestBody AnalysisRequest request) {
-        return analyzer.analyze(request);
+    @PostMapping(value = "/analyze", consumes = MediaType.TEXT_PLAIN_VALUE)
+    public List<SmellFinding> analyze(@RequestBody(required = false) String code) {
+        return analyzer.analyze(code);
     }
 
     @ExceptionHandler(InvalidAnalysisRequest.class)

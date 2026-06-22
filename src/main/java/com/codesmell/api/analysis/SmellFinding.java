@@ -1,4 +1,4 @@
-package com.codesmell.api;
+package com.codesmell.api.analysis;
 
 public record SmellFinding(
     String rule,

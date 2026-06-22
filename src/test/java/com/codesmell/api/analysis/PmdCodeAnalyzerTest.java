@@ -1,4 +1,4 @@
-package com.codesmell.api;
+package com.codesmell.api.analysis;
 
 import org.junit.jupiter.api.Test;
 

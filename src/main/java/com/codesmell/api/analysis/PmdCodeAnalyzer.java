@@ -1,4 +1,4 @@
-package com.codesmell.api;
+package com.codesmell.api.analysis;
 
 import net.sourceforge.pmd.PMDConfiguration;
 import net.sourceforge.pmd.PmdAnalysis;
@@ -29,7 +29,11 @@ public class PmdCodeAnalyzer implements CodeAnalyzer {
         try (var analysis = PmdAnalysis.create(configuration)) {
             analysis.addRuleSet(analysis.newRuleSetLoader().loadFromString(RULESET_RESOURCE, rulesetXml()));
             analysis.files().addFile(sourceFile(code));
-            return analysis.performAnalysisAndCollectReport().getViolations().stream()
+            var report = analysis.performAnalysisAndCollectReport();
+            if (!report.getProcessingErrors().isEmpty()) {
+                throw new InvalidAnalysisRequest("code could not be parsed");
+            }
+            return report.getViolations().stream()
                 .sorted(Comparator.comparingInt(RuleViolation::getBeginLine).thenComparing(violation -> violation.getRule().getName()))
                 .map(this::findingFrom)
                 .toList();

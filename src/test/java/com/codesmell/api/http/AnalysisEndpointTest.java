@@ -1,5 +1,7 @@
-package com.codesmell.api;
+package com.codesmell.api.http;
 
+import com.codesmell.api.CodeSmellApiApplication;
+import com.codesmell.api.analysis.SmellFinding;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -15,7 +17,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,7 +30,7 @@ class AnalysisEndpointTest {
             .web(WebApplicationType.SERVLET)
             .properties("server.port=0")
             .run()) {
-            var response = post(portOf(context), Map.of("code", fixture("DeadCode.java")));
+            var response = post(portOf(context), fixture("DeadCode.java"));
 
             assertThat(response.statusCode()).isEqualTo(200);
             assertThat(findingsFrom(response.body()))
@@ -44,10 +45,36 @@ class AnalysisEndpointTest {
             .web(WebApplicationType.SERVLET)
             .properties("server.port=0")
             .run()) {
-            var response = post(portOf(context), Map.of("code", fixture("CleanCode.java")));
+            var response = post(portOf(context), fixture("CleanCode.java"));
 
             assertThat(response.statusCode()).isEqualTo(200);
             assertThat(findingsFrom(response.body())).isEmpty();
+        }
+    }
+
+    @Test
+    void rejectsEmptyBody() throws Exception {
+        try (var context = new SpringApplicationBuilder(CodeSmellApiApplication.class)
+            .web(WebApplicationType.SERVLET)
+            .properties("server.port=0")
+            .run()) {
+            var response = post(portOf(context), "");
+
+            assertThat(response.statusCode()).isEqualTo(400);
+            assertThat(response.body()).isEqualTo("{\"error\":\"code is required\"}");
+        }
+    }
+
+    @Test
+    void rejectsUnparseableCode() throws Exception {
+        try (var context = new SpringApplicationBuilder(CodeSmellApiApplication.class)
+            .web(WebApplicationType.SERVLET)
+            .properties("server.port=0")
+            .run()) {
+            var response = post(portOf(context), "this is not Java");
+
+            assertThat(response.statusCode()).isEqualTo(400);
+            assertThat(response.body()).isEqualTo("{\"error\":\"code could not be parsed\"}");
         }
     }
 
@@ -55,12 +82,12 @@ class AnalysisEndpointTest {
         return ((WebServerApplicationContext) context).getWebServer().getPort();
     }
 
-    private HttpResponse<String> post(int port, Map<String, String> body) throws Exception {
+    private HttpResponse<String> post(int port, String body) throws Exception {
         return HttpClient.newHttpClient().send(
             HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:" + port + "/analyze"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(json.writeValueAsString(body)))
+                .header("Content-Type", "text/plain")
+                .POST(HttpRequest.BodyPublishers.ofString(body))
                 .build(),
             HttpResponse.BodyHandlers.ofString()
         );
