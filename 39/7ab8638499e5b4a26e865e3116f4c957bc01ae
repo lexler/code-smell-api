@@ -1,0 +1,21 @@
+test.sh
+  s_389830dd831204::t_be8eff229e8902 1-4
+run.sh
+  s_389830dd831204::t_be8eff229e8902 1-4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.10",
+  "base_commit_sha": "397ab8638499e5b4a26e865e3116f4c957bc01ae",
+  "prompts": {},
+  "sessions": {
+    "s_389830dd831204": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ef105-bb78-77d0-995d-db1f018f1644",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Lada Kesseler <archie.kesseler@gmail.com>"
+    }
+  }
+}
