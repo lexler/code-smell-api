@@ -1,0 +1,26 @@
+README.md
+  s_389830dd831204::t_c98ce113c0c217 26,28
+src/main/java/com/codesmell/api/analysis/PmdCodeAnalyzer.java
+  s_389830dd831204::t_5a9a9dcce53ae6 8,24-29,37,58-63
+src/main/java/com/codesmell/api/analysis/AnalysisService.java
+  s_389830dd831204::t_a19e7823d76daf 11,69
+  s_389830dd831204::t_a8f6e167df0e9c 12-14,39-45,51,55,70-87
+src/test/java/com/codesmell/api/analysis/AnalysisServiceTest.java
+  s_389830dd831204::t_53a23cd707b8ed 74-96,112-124,126
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.10",
+  "base_commit_sha": "bd12aa395c5ede30eb821827a1a1be30729e7df6",
+  "prompts": {},
+  "sessions": {
+    "s_389830dd831204": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ef105-bb78-77d0-995d-db1f018f1644",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Lada Kesseler <archie.kesseler@gmail.com>"
+    }
+  }
+}
