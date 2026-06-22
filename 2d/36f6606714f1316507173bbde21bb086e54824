@@ -1,0 +1,50 @@
+src/main/java/com/codesmell/api/analysis/error/TooManyAnalyses.java
+  s_389830dd831204::t_d7d062701764c0 1-8
+src/main/java/com/codesmell/api/analysis/result/Violation.java
+  s_389830dd831204::t_e0b93732e96c3b 1-8
+src/test/java/com/codesmell/api/analysis/AnalysisServiceTest.java
+  s_389830dd831204::t_e0b93732e96c3b 7,20-22,24
+  s_389830dd831204::t_d7d062701764c0 3-6
+src/main/java/com/codesmell/api/analysis/AnalysisService.java
+  s_389830dd831204::t_d7d062701764c0 3-7,57,77
+  s_389830dd831204::t_e0b93732e96c3b 8,54,60,75
+src/main/java/com/codesmell/api/http/AnalysisController.java
+  s_389830dd831204::t_d7d062701764c0 4-7
+  s_389830dd831204::t_e0b93732e96c3b 8,30
+src/main/java/com/codesmell/api/analysis/error/AnalysisFailed.java
+  s_389830dd831204::t_d7d062701764c0 1-8
+src/test/java/com/codesmell/api/http/AnalysisEndpointTest.java
+  s_389830dd831204::t_7de1fd9c43c0fc 36,51,96
+  s_389830dd831204::t_e0b93732e96c3b 4,28,37,43
+src/test/java/com/codesmell/api/analysis/pmd/PmdCodeAnalyzerTest.java
+  s_389830dd831204::t_d7d062701764c0 1-2,4-34,36-63
+  s_389830dd831204::t_e0b93732e96c3b 3,35
+src/main/java/com/codesmell/api/analysis/error/AnalysisTimedOut.java
+  s_389830dd831204::t_d7d062701764c0 1-8
+src/main/java/com/codesmell/api/analysis/pmd/PmdCodeAnalyzer.java
+  s_389830dd831204::t_d7d062701764c0 1-4,6-33,35-47,49-67,70-87
+  s_389830dd831204::t_e0b93732e96c3b 5,34,48,68-69
+src/main/java/com/codesmell/api/analysis/error/AnalysisRequestTooLarge.java
+  s_389830dd831204::t_d7d062701764c0 1-8
+src/main/java/com/codesmell/api/analysis/error/InvalidAnalysisRequest.java
+  s_389830dd831204::t_d7d062701764c0 1-8
+src/main/java/com/codesmell/api/analysis/CodeAnalyzer.java
+  s_389830dd831204::t_e0b93732e96c3b 3,9
+  s_389830dd831204::t_d7d062701764c0 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.10",
+  "base_commit_sha": "2d36f6606714f1316507173bbde21bb086e54824",
+  "prompts": {},
+  "sessions": {
+    "s_389830dd831204": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ef105-bb78-77d0-995d-db1f018f1644",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Lada Kesseler <archie.kesseler@gmail.com>"
+    }
+  }
+}
